@@ -81,7 +81,7 @@ Before setting up the project, make sure you have the following installed:
    Move into the project folder by running:
 
    ```bash
-   cd ChallengeCodereRefactor
+   cd Challenge
    ```
 
 3. **Restore Dependencies**
@@ -117,7 +117,7 @@ You can run the project through **Visual Studio** or the **Command Line Interfac
 
 ### 💻 From Visual Studio
 
-- Open the solution file `ChallengeCodereRefactor.sln`.
+- Open the solution file `Challenge.sln`.
 - Press `F5` to run with debugging or `Ctrl + F5` to run without debugging.
 
 ### 🔡 From Command Line
@@ -125,7 +125,7 @@ You can run the project through **Visual Studio** or the **Command Line Interfac
 Navigate to the project directory:
 
 ```bash
-cd src/Configurations
+cd src/Challenge
 ```
 
 Run the project through Visual Studio 2022 by selecting and running the **IIS Express** profile.
@@ -164,7 +164,7 @@ dotnet test
 Integration tests verify that multiple components work together correctly:
 
 ```bash
-cd src/Tests/Integration
+cd src/Challege.Tests
 dotnet test
 ```
 
