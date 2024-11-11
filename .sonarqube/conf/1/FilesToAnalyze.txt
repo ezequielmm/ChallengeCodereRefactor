@@ -1,0 +1,15 @@
+﻿C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\JobControllerTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowControllerTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowRepositoryTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowServiceConstructorTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowServiceTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\SimpleIntegrationTests.cs
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\SwaggerIntegrationTests.cs
+C:\Users\cheva\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.cs
+C:\Users\cheva\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.exe
+C:\Users\cheva\.nuget\packages\microsoft.testplatform.testhost\17.8.0\build\netcoreapp3.1\x64\testhost.dll
+C:\Users\cheva\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Users\cheva\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.reporters.netcoreapp10.dll
+C:\Users\cheva\.nuget\packages\xunit.runner.visualstudio\2.5.3\build\net6.0\xunit.runner.utility.netcoreapp10.dll
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\Challenge.Tests\Challenge.Tests\TestResults\coverage.opencover.xml
+C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\xunit.runner.json
