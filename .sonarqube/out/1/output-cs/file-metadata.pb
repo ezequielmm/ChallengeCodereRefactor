@@ -1,12 +1,0 @@
-k
-bC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\JobControllerTests.csutf-8l
-cC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowControllerTests.csutf-8l
-cC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowRepositoryTests.csutf-8t
-kC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowServiceConstructorTests.csutf-8p
-`C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\ShowServiceTests.cswindows-1252o
-fC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\SimpleIntegrationTests.csutf-8p
-gC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\SwaggerIntegrationTests.csutf-8}
-rC:\Users\cheva\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.csutf-8Š
-C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\Challenge.Tests.GlobalUsings.g.csutf-8˜
-ŒC:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8ˆ
-}C:\Users\cheva\Downloads\ChallengeFix-main\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\Challenge.Tests.AssemblyInfo.csutf-8
