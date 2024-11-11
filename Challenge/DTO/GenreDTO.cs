@@ -5,7 +5,7 @@ using Challenge.Models;
 
 namespace Challenge.DTO
 {
-    public class GenreDTO
+    public class GenreDto
     {
 
         public string Name { get; set; }
