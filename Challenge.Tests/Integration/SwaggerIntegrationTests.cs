@@ -1,9 +1,6 @@
-﻿using Xunit;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using System.Net;
-using Challenge; 
 using Microsoft.AspNetCore.Hosting;
 
 namespace Challenge.Tests.Integration

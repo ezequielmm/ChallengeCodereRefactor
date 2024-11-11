@@ -1,16 +1,10 @@
-﻿using Xunit;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 using FluentAssertions;
 using System.Net;
-using Challenge; 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using System;
 using Moq;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 using Challenge.Domain.Repositories.Interfaces;
 using Challenge.Application.Interfaces;
 using Challenge.Infrastructure.Data;

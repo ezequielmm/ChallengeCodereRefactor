@@ -1,9 +1,5 @@
-﻿using Xunit;
-using Moq;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Moq;
 using Microsoft.AspNetCore.Mvc;
-using Challenge.Application.DTOs;
 using Challenge.Domain.Entities;
 using Challenge.Application.Interfaces;
 using Challenge.UI.Controllers;

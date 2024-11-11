@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Challenge.Domain.Entities;
+﻿using Challenge.Domain.Entities;
 
 namespace Challenge.Domain.Repositories.Interfaces
 {

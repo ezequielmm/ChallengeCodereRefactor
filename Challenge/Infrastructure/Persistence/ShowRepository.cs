@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Challenge.Domain.Entities;
+﻿using Challenge.Domain.Entities;
 using Challenge.Domain.Repositories.Interfaces;
-using Challenge.Application.DTOs;
 using Challenge.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

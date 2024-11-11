@@ -1,9 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
 using Challenge.Domain.Repositories.Interfaces;
 using Challenge.Application.Interfaces;
 using Challenge.Application.Services;

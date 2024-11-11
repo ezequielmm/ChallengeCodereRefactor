@@ -1,8 +1,6 @@
-﻿using Xunit;
-using Moq;
+﻿using Moq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using Challenge.Application.Interfaces;
 using Challenge.UI.Controllers;
 

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Challenge.Infrastructure.Data;
-using Challenge.Application.DTOs;
-using Challenge.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
-using Challenge.Domain.Entities;
+﻿using Challenge.Domain.Entities;
 
 namespace Challenge.Application.Interfaces
 {

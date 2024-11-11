@@ -1,6 +1,4 @@
-﻿using Xunit;
-using Moq;
-using System;
+﻿using Moq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Challenge.Domain.Repositories.Interfaces;

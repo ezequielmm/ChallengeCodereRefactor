@@ -1,16 +1,9 @@
-using Xunit;
 using Moq;
 using Moq.Protected;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Challenge.Infrastructure.Persistence;
 using System.Net;
 using System.Text.Json;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Linq;
-using System;
 using Microsoft.Extensions.Configuration;
 using Challenge.Application.DTOs;
 using Challenge.Domain.Entities;

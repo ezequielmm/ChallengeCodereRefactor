@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 using Challenge.Domain.Entities;
 using Challenge.Application.DTOs;
 using Challenge.Domain.Repositories.Interfaces;
