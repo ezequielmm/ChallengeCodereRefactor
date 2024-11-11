@@ -120,6 +120,27 @@
           "locations": [
             {
               "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceConstructorTests.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 40,
+                  "endLine": 40,
+                  "endColumn": 56
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8620",
+          "level": "warning",
+          "message": "El argumento de tipo \"Dictionary<string, string>\" no se puede usar para el parámetro \"initialData\" de tipo \"IEnumerable<KeyValuePair<string, string?>>\" en \"IConfigurationBuilder MemoryConfigurationBuilderExtensions.AddInMemoryCollection(IConfigurationBuilder configurationBuilder, IEnumerable<KeyValuePair<string, string?>>? initialData)\" debido a las diferencias en la nulabilidad de los tipos de referencia.",
+          "locations": [
+            {
+              "resultFile": {
                 "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceTests.cs",
                 "region": {
                   "startLine": 53,
@@ -271,18 +292,18 @@
           }
         },
         {
-          "ruleId": "CS8620",
+          "ruleId": "CS8602",
           "level": "warning",
-          "message": "El argumento de tipo \"Dictionary<string, string>\" no se puede usar para el parámetro \"initialData\" de tipo \"IEnumerable<KeyValuePair<string, string?>>\" en \"IConfigurationBuilder MemoryConfigurationBuilderExtensions.AddInMemoryCollection(IConfigurationBuilder configurationBuilder, IEnumerable<KeyValuePair<string, string?>>? initialData)\" debido a las diferencias en la nulabilidad de los tipos de referencia.",
+          "message": "Desreferencia de una referencia posiblemente NULL.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceConstructorTests.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/SwaggerIntegrationTests.cs",
                 "region": {
-                  "startLine": 40,
-                  "startColumn": 40,
-                  "endLine": 40,
-                  "endColumn": 56
+                  "startLine": 42,
+                  "startColumn": 13,
+                  "endLine": 42,
+                  "endColumn": 49
                 }
               }
             }
@@ -304,48 +325,6 @@
                   "startColumn": 17,
                   "endLine": 76,
                   "endColumn": 21
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8625",
-          "level": "warning",
-          "message": "No se puede convertir un literal NULL en un tipo de referencia que no acepta valores NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceConstructorTests.cs",
-                "region": {
-                  "startLine": 97,
-                  "startColumn": 17,
-                  "endLine": 97,
-                  "endColumn": 21
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8602",
-          "level": "warning",
-          "message": "Desreferencia de una referencia posiblemente NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/SimpleIntegrationTests.cs",
-                "region": {
-                  "startLine": 64,
-                  "startColumn": 13,
-                  "endLine": 64,
-                  "endColumn": 49
                 }
               }
             }
@@ -382,11 +361,11 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/SwaggerIntegrationTests.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/SimpleIntegrationTests.cs",
                 "region": {
-                  "startLine": 42,
+                  "startLine": 64,
                   "startColumn": 13,
-                  "endLine": 42,
+                  "endLine": 64,
                   "endColumn": 49
                 }
               }
@@ -405,9 +384,9 @@
               "resultFile": {
                 "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceConstructorTests.cs",
                 "region": {
-                  "startLine": 118,
+                  "startLine": 97,
                   "startColumn": 17,
-                  "endLine": 118,
+                  "endLine": 97,
                   "endColumn": 21
                 }
               }
@@ -430,6 +409,27 @@
                   "startColumn": 39,
                   "endLine": 112,
                   "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8625",
+          "level": "warning",
+          "message": "No se puede convertir un literal NULL en un tipo de referencia que no acepta valores NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceConstructorTests.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 17,
+                  "endLine": 118,
+                  "endColumn": 21
                 }
               }
             }
@@ -544,27 +544,6 @@
           }
         },
         {
-          "ruleId": "CS8602",
-          "level": "warning",
-          "message": "Desreferencia de una referencia posiblemente NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowControllerTests.cs",
-                "region": {
-                  "startLine": 111,
-                  "startColumn": 35,
-                  "endLine": 111,
-                  "endColumn": 68
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
           "ruleId": "CS8625",
           "level": "warning",
           "message": "No se puede convertir un literal NULL en un tipo de referencia que no acepta valores NULL.",
@@ -598,6 +577,27 @@
                   "startColumn": 46,
                   "endLine": 85,
                   "endColumn": 64
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Desreferencia de una referencia posiblemente NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowControllerTests.cs",
+                "region": {
+                  "startLine": 111,
+                  "startColumn": 35,
+                  "endLine": 111,
+                  "endColumn": 68
                 }
               }
             }
@@ -1678,27 +1678,6 @@
           }
         },
         {
-          "ruleId": "CA1816",
-          "level": "note",
-          "message": "Cambie \"ShowServiceTests.Dispose()\" para llamar a GC.SuppressFinalize(object). Con esto se evitará que los tipos derivados que introducen un finalizador tengan que volver a implementar \"IDisposable\" para llamarlo.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceTests.cs",
-                "region": {
-                  "startLine": 121,
-                  "startColumn": 21,
-                  "endLine": 121,
-                  "endColumn": 28
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
           "ruleId": "CA1869",
           "level": "note",
           "message": "Evite crear una nueva instancia de \"JsonSerializerOptions\" para cada operación de serialización. En su lugar, almacene en caché y reutilice instancias.",
@@ -1711,6 +1690,27 @@
                   "startColumn": 55,
                   "endLine": 93,
                   "endColumn": 134
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CA1816",
+          "level": "note",
+          "message": "Cambie \"ShowServiceTests.Dispose()\" para llamar a GC.SuppressFinalize(object). Con esto se evitará que los tipos derivados que introducen un finalizador tengan que volver a implementar \"IDisposable\" para llamarlo.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge.Tests/ShowServiceTests.cs",
+                "region": {
+                  "startLine": 121,
+                  "startColumn": 21,
+                  "endLine": 121,
+                  "endColumn": 28
                 }
               }
             }

@@ -240,7 +240,41 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/GenreDTO.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "endLine": 11,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/GenreDTO.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "endLine": 11,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Imdb\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/ExternalsDTO.cs",
                 "region": {
                   "startLine": 14,
                   "startColumn": 23,
@@ -253,114 +287,12 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/ExternalsDTO.cs",
                 "region": {
                   "startLine": 14,
                   "startColumn": 23,
                   "endLine": 14,
                   "endColumn": 27
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
-          "message": "El elemento propiedad \"Timezone\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
-                "region": {
-                  "startLine": 17,
-                  "startColumn": 23,
-                  "endLine": 17,
-                  "endColumn": 31
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
-                "region": {
-                  "startLine": 17,
-                  "startColumn": 23,
-                  "endLine": 17,
-                  "endColumn": 31
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
-          "message": "El elemento propiedad \"Code\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 23,
-                  "endLine": 20,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
-                "region": {
-                  "startLine": 20,
-                  "startColumn": 23,
-                  "endLine": 20,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
-          "message": "El elemento propiedad \"Show\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Rating.cs",
-                "region": {
-                  "startLine": 19,
-                  "startColumn": 21,
-                  "endLine": 19,
-                  "endColumn": 25
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Rating.cs",
-                "region": {
-                  "startLine": 19,
-                  "startColumn": 21,
-                  "endLine": 19,
-                  "endColumn": 25
                 }
               }
             }
@@ -440,79 +372,11 @@
         {
           "ruleId": "CS8618",
           "level": "warning",
-          "message": "El elemento propiedad \"Show\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Externals.cs",
-                "region": {
-                  "startLine": 25,
-                  "startColumn": 21,
-                  "endLine": 25,
-                  "endColumn": 25
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Externals.cs",
-                "region": {
-                  "startLine": 25,
-                  "startColumn": 21,
-                  "endLine": 25,
-                  "endColumn": 25
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
           "message": "El elemento propiedad \"Name\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 23,
-                  "endLine": 11,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
-                "region": {
-                  "startLine": 11,
-                  "startColumn": 23,
-                  "endLine": 11,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
-          "message": "El elemento propiedad \"Code\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
                   "startLine": 14,
                   "startColumn": 23,
@@ -525,7 +389,7 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
                   "startLine": 14,
                   "startColumn": 23,
@@ -546,7 +410,7 @@
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
                   "startLine": 17,
                   "startColumn": 23,
@@ -559,7 +423,7 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
                   "startLine": 17,
                   "startColumn": 23,
@@ -576,15 +440,15 @@
         {
           "ruleId": "CS8618",
           "level": "warning",
-          "message": "El elemento propiedad \"Name\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "message": "El elemento propiedad \"Code\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/GenreDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
-                  "startLine": 11,
+                  "startLine": 20,
                   "startColumn": 23,
-                  "endLine": 11,
+                  "endLine": 20,
                   "endColumn": 27
                 }
               }
@@ -593,12 +457,46 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/GenreDTO.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Country.cs",
                 "region": {
-                  "startLine": 11,
+                  "startLine": 20,
                   "startColumn": 23,
-                  "endLine": 11,
+                  "endLine": 20,
                   "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Show\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Rating.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 21,
+                  "endLine": 19,
+                  "endColumn": 25
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Rating.cs",
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 21,
+                  "endLine": 19,
+                  "endColumn": 25
                 }
               }
             }
@@ -814,16 +712,16 @@
         {
           "ruleId": "CS8618",
           "level": "warning",
-          "message": "El elemento propiedad \"Name\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "message": "El elemento propiedad \"Show\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
           "locations": [
             {
               "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Genre.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Externals.cs",
                 "region": {
-                  "startLine": 15,
-                  "startColumn": 23,
-                  "endLine": 15,
-                  "endColumn": 27
+                  "startLine": 25,
+                  "startColumn": 21,
+                  "endLine": 25,
+                  "endColumn": 25
                 }
               }
             }
@@ -831,46 +729,12 @@
           "relatedLocations": [
             {
               "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Genre.cs",
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Externals.cs",
                 "region": {
-                  "startLine": 15,
-                  "startColumn": 23,
-                  "endLine": 15,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "properties": {
-            "warningLevel": 1
-          }
-        },
-        {
-          "ruleId": "CS8618",
-          "level": "warning",
-          "message": "El elemento propiedad \"Imdb\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
-          "locations": [
-            {
-              "resultFile": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/ExternalsDTO.cs",
-                "region": {
-                  "startLine": 14,
-                  "startColumn": 23,
-                  "endLine": 14,
-                  "endColumn": 27
-                }
-              }
-            }
-          ],
-          "relatedLocations": [
-            {
-              "physicalLocation": {
-                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/ExternalsDTO.cs",
-                "region": {
-                  "startLine": 14,
-                  "startColumn": 23,
-                  "endLine": 14,
-                  "endColumn": 27
+                  "startLine": 25,
+                  "startColumn": 21,
+                  "endLine": 25,
+                  "endColumn": 25
                 }
               }
             }
@@ -1084,6 +948,108 @@
           }
         },
         {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Name\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "endLine": 11,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 23,
+                  "endLine": 11,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Code\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 23,
+                  "endLine": 14,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 23,
+                  "endLine": 14,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Timezone\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 23,
+                  "endLine": 17,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/DTO/CountryDTO.cs",
+                "region": {
+                  "startLine": 17,
+                  "startColumn": 23,
+                  "endLine": 17,
+                  "endColumn": 31
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
           "ruleId": "CS0168",
           "level": "warning",
           "message": "La variable 'ex' se ha declarado pero nunca se usa",
@@ -1102,6 +1068,40 @@
           ],
           "properties": {
             "warningLevel": 3
+          }
+        },
+        {
+          "ruleId": "CS8618",
+          "level": "warning",
+          "message": "El elemento propiedad \"Name\" que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de declarar el elemento propiedad como que admite un valor NULL.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Genre.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/cheva/Downloads/ChallengeFix-main/ChallengeFix-main/Challenge/Models/Genre.cs",
+                "region": {
+                  "startLine": 15,
+                  "startColumn": 23,
+                  "endLine": 15,
+                  "endColumn": 27
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
           }
         },
         {

@@ -127,8 +127,8 @@
   </ServerSettings>
   <LocalSettings>
     <Property Name="sonar.host.url">http://192.168.100.242:9000</Property>
-    <Property Name="sonar.cs.opencover.reportsPaths">./Challenge.Tests/TestResults/coverage.opencover.xml</Property>
-    <Property Name="sonar.exclusions">./Challenge.Tests/TestResults/coverage.opencover.xml</Property>
+    <Property Name="sonar.cs.opencover.reportsPaths">./Challenge.Tests/Challenge.Tests/Challenge.Tests/TestResults/coverage.opencover.xml</Property>
+    <Property Name="sonar.exclusions">./Challenge.Tests/Challenge.Tests/Challenge.Tests/TestResults/coverage.opencover.xml</Property>
   </LocalSettings>
   <AnalyzersSettings>
     <AnalyzerSettings>

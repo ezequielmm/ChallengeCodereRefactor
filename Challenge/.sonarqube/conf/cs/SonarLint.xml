@@ -3,7 +3,7 @@
   <Settings>
     <Setting>
       <Key>sonar.cs.opencover.reportsPaths</Key>
-      <Value>./Challenge.Tests/TestResults/coverage.opencover.xml</Value>
+      <Value>./Challenge.Tests/Challenge.Tests/Challenge.Tests/TestResults/coverage.opencover.xml</Value>
     </Setting>
     <Setting>
       <Key>sonar.cs.ignoreHeaderComments</Key>
