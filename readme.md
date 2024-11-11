@@ -184,7 +184,7 @@ dotnet test
 
 ## 📈 SonarQube Analysis Results
 
-![SonarQube Analysis](./Captura%20de%20pantalla%202024-11-10%20222309.png)
+![SonarQube Analysis](./sonarqube.png)
 
 
 
