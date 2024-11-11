@@ -18,6 +18,20 @@ The project is designed to manage TV shows, allowing users to perform CRUD opera
 
 ## 🫠 Architecture & Patterns
 
+In addition to using Domain-Driven Design, the project also follows best practices and **SOLID** principles. These principles help ensure that the code is maintainable, scalable, and easy to understand.
+
+### 🏅 SOLID Principles Applied
+
+1. **Single Responsibility Principle (SRP)**: Each class in the project has a single responsibility. For example, the `ShowService` class is solely responsible for managing TV show operations, while `ShowRepository` handles data access for TV shows.
+
+2. **Open/Closed Principle (OCP)**: The project is designed to be open for extension but closed for modification. The use of interfaces, such as `IShowRepository`, allows new implementations to be added without modifying the existing code.
+
+3. **Liskov Substitution Principle (LSP)**: The `IRepository<T>` interface is implemented by different repositories, and these implementations can be substituted without altering the behavior of the application.
+
+4. **Interface Segregation Principle (ISP)**: Interfaces in the project are kept small and specific to their purpose. For instance, the `IShowRepository` only includes methods related to TV show data, ensuring that classes do not depend on methods they do not use.
+
+5. **Dependency Inversion Principle (DIP)**: High-level modules do not depend on low-level modules; instead, both depend on abstractions. The services in the application layer depend on repository interfaces rather than concrete implementations, making it easier to change the data access layer.
+
 This project uses **Domain-Driven Design (DDD)**, which divides the software into different layers to make the code more maintainable and scalable. The idea behind DDD is to model the software closely to the business logic, making it easier for developers to understand and modify.
 
 ### 📦 Layers Explained
@@ -155,7 +169,7 @@ Regularly running tests helps ensure that the code is reliable and performs as e
 Unit tests check the functionality of individual components:
 
 ```bash
-cd src/Tests/ApplicationTests
+cd src/Challenge.Tests
 dotnet test
 ```
 
@@ -164,13 +178,13 @@ dotnet test
 Integration tests verify that multiple components work together correctly:
 
 ```bash
-cd src/Challege.Tests
+cd src/Challenge.Tests
 dotnet test
 ```
 
 ## 📈 SonarQube Analysis Results
 
-![SonarQube Analysis](./sonarqube.png)
+![SonarQube Analysis](./Captura%20de%20pantalla%202024-11-10%20222309.png)
 
 
 
