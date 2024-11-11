@@ -1,0 +1,12 @@
+c
+ZC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\JobControllerTests.csutf-8d
+[C:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\ShowControllerTests.csutf-8d
+[C:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\ShowRepositoryTests.csutf-8l
+cC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\ShowServiceConstructorTests.csutf-8h
+XC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\ShowServiceTests.cswindows-1252g
+^C:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\SimpleIntegrationTests.csutf-8h
+_C:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\SwaggerIntegrationTests.csutf-8}
+rC:\Users\cheva\.nuget\packages\microsoft.net.test.sdk\17.8.0\build\netcoreapp3.1\Microsoft.NET.Test.Sdk.Program.csutf-8Ç
+wC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\Challenge.Tests.GlobalUsings.g.csutf-8ê
+ÑC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\.NETCoreApp,Version=v8.0.AssemblyAttributes.csutf-8Ä
+uC:\Users\cheva\OneDrive\Documentos\ChallengeFix-main\Challenge.Tests\obj\Debug\net8.0\Challenge.Tests.AssemblyInfo.csutf-8

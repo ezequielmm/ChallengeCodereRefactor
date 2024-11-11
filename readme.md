@@ -168,6 +168,14 @@ cd src/Tests/Integration
 dotnet test
 ```
 
+## 📈 SonarQube Analysis Results
+
+![SonarQube Analysis](./sonarqube.png)
+
+
+
+The project has achieved a code coverage of **95%** and has been graded **A** in terms of code quality. There are no **code smells**, bugs, vulnerabilities, or security hotspots, indicating that the code is well-written and secure.
+
 ## 📣 Contact
 
 If you have questions or need assistance, please feel free to reach out:

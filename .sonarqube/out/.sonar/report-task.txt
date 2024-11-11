@@ -1,0 +1,6 @@
+projectKey=ChallengeCodereRefactorFix
+serverUrl=http://192.168.100.242:9000
+serverVersion=9.9.7.96285
+dashboardUrl=http://192.168.100.242:9000/dashboard?id=ChallengeCodereRefactorFix
+ceTaskId=AZMY0Ewvkjg3gWQThbgj
+ceTaskUrl=http://192.168.100.242:9000/api/ce/task?id=AZMY0Ewvkjg3gWQThbgj
