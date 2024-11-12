@@ -21,9 +21,13 @@ builder.Services.AddScoped<IShowRepository, ShowRepository>();
 builder.Services.AddHttpClient();
 
 // Configura los controladores y la documentación de la API
-builder.Services.AddControllers();
-
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
