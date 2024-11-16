@@ -15,25 +15,7 @@ namespace Challenge.Application.DTOs
         public List<string> Genres { get; set; }
     }
 
-    /// <summary>
-    /// DTO para la Network del Show.
-    /// </summary>
-    public class CreateNetworkDto
-    {
-        public int? Id { get; set; } // Usar si se refiere a una Network existente
-        public string Name { get; set; }
-        public CreateCountryDto Country { get; set; }
-    }
 
-    /// <summary>
-    /// DTO para el Country de la Network.
-    /// </summary>
-    public class CreateCountryDto
-    {
-        public string Code { get; set; } // Utilizar como identificador único
-        public string Name { get; set; }
-        public string Timezone { get; set; }
-    }
 
     /// <summary>
     /// DTO para los Externals del Show.

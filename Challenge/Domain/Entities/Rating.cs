@@ -12,7 +12,7 @@ namespace Challenge.Domain.Entities
 
         public int ShowId { get; set; }
         [ForeignKey("ShowId")]
-        [JsonIgnore]
+        [JsonIgnore] 
         public Show Show { get; set; }
 
         [JsonPropertyName("average")]

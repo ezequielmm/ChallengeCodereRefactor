@@ -59,22 +59,12 @@ namespace Challenge.Infrastructure.Data
 
             // Configuración de Externals
             modelBuilder.Entity<Externals>()
-                .HasKey(e => e.Id);
-            modelBuilder.Entity<Externals>()
-                .Property(e => e.Id)
-                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
-            modelBuilder.Entity<Externals>()
                 .HasOne(e => e.Show)
                 .WithOne(s => s.Externals)
                 .HasForeignKey<Externals>(e => e.ShowId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configuración de Rating
-            modelBuilder.Entity<Rating>()
-                .HasKey(r => r.Id);
-            modelBuilder.Entity<Rating>()
-                .Property(r => r.Id)
-                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
             modelBuilder.Entity<Rating>()
                 .HasOne(r => r.Show)
                 .WithOne(s => s.Rating)

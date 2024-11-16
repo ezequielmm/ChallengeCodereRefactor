@@ -12,11 +12,11 @@ namespace Challenge.Domain.Entities
 
         public int ShowId { get; set; }
         [ForeignKey("ShowId")]
-        [JsonIgnore]
+        [JsonIgnore] // Ignora esta propiedad durante la serialización JSON
         public Show Show { get; set; }
 
         [JsonPropertyName("imdb")]
-        public string? Imdb { get; set; } // Propiedad nullable
+        public string? Imdb { get; set; }
 
         [JsonPropertyName("tvrage")]
         public int? Tvrage { get; set; }
