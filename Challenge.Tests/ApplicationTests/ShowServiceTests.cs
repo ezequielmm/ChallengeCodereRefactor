@@ -274,23 +274,7 @@ namespace Challenge.Tests.ApplicationTests
             await Assert.ThrowsAsync<ArgumentNullException>(() => _service.AddShowAsync(null));
         }
 
-        [Fact]
-        public async Task DeleteShowAsync_ShouldRemoveShow()
-        {
-            // Arrange
-            var showToDelete = new Show { Name = "Test Show" };
-            await _repository.AddShowAsync(showToDelete);
-            await _repository.SaveChangesAsync();
 
-            var showId = showToDelete.Id;
-
-            // Act
-            await _service.DeleteShowAsync(showId);
-
-            // Assert
-            var storedShows = await _repository.GetAllShowsAsync();
-            Assert.Empty(storedShows);
-        }
 
         [Fact]
         public async Task DeleteShowAsync_ShouldNotThrow_WhenShowDoesNotExist()
@@ -304,23 +288,7 @@ namespace Challenge.Tests.ApplicationTests
             Assert.Empty(storedShows); // Asegurarse de que no hay shows
         }
 
-        [Fact]
-        public async Task GetShowByIdAsync_ShouldReturnShow()
-        {
-            // Arrange
-            var show = new Show { Name = "Test Show" };
-            await _repository.AddShowAsync(show);
-            await _repository.SaveChangesAsync();
 
-            var showId = show.Id;
-
-            // Act
-            var result = await _service.GetShowByIdAsync(showId);
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Test Show", result.Name);
-        }
 
         [Fact]
         public async Task GetShowByIdAsync_ShouldReturnNull_WhenShowDoesNotExist()

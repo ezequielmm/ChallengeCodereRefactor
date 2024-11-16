@@ -65,7 +65,6 @@ namespace Challenge.Infrastructure.Persistence
 
         public void DeleteShow(Show show)
         {
-            // Elimina el show del contexto
             _context.Shows.Remove(show);
         }
 
