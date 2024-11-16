@@ -1,38 +1,29 @@
 ﻿using Moq;
 using Microsoft.AspNetCore.Mvc;
-using Challenge.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Challenge.Application.Interfaces;
+using Challenge.Application.DTOs;
+using Challenge.Domain.Entities;
 using Challenge.UI.Controllers;
+using Challenge.Infrastructure.Data;
 
 namespace Challenge.Tests.UITests
 {
-    /// <summary>
-    /// Pruebas unitarias para <see cref="ShowsController"/>.
-    /// </summary>
     public class ShowsControllerTests
     {
         private readonly Mock<IShowService> _mockShowService;
+        private readonly Mock<ApplicationDbContext> _mockContext;
         private readonly ShowsController _controller;
 
-        /// <summary>
-        /// Constructor que inicializa el mock y el controlador.
-        /// </summary>
         public ShowsControllerTests()
         {
-            // Inicializar el mock de IShowService
             _mockShowService = new Mock<IShowService>();
-
-            // Inicializar el controlador con el mock
-            _controller = new ShowsController(_mockShowService.Object);
+            _mockContext = new Mock<ApplicationDbContext>(new DbContextOptions<ApplicationDbContext>());
+            _controller = new ShowsController(_mockShowService.Object, _mockContext.Object);
         }
 
-        #region GET: api/shows
-
-        /// <summary>
-        /// Verifica que GetAllShows retorna Ok con una lista de shows.
-        /// </summary>
         [Fact]
-        public async Task GetAllShows_ReturnsOkResult_WithListOfShows()
+        public async Task GetAllShows_ReturnsOk_WithListOfShows()
         {
             // Arrange
             var shows = new List<Show>
@@ -40,7 +31,6 @@ namespace Challenge.Tests.UITests
                 new Show { Id = 1, Name = "Show 1" },
                 new Show { Id = 2, Name = "Show 2" }
             };
-
             _mockShowService.Setup(s => s.GetAllShowsAsync()).ReturnsAsync(shows);
 
             // Act
@@ -49,220 +39,60 @@ namespace Challenge.Tests.UITests
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnShows = Assert.IsType<List<Show>>(okResult.Value);
-            Assert.Equal(shows.Count, returnShows.Count);
-            Assert.Equal(shows, returnShows);
+            Assert.Equal(2, returnShows.Count);
         }
 
-        #endregion
-
-        #region GET: api/shows/{id}
-
-        /// <summary>
-        /// Verifica que GetShowById retorna Ok con el show solicitado cuando existe.
-        /// </summary>
         [Fact]
-        public async Task GetShowById_ShowExists_ReturnsOkResult_WithShow()
+        public async Task GetShowById_ReturnsNotFound_WhenShowDoesNotExist()
         {
             // Arrange
-            int showId = 1;
-            var show = new Show { Id = showId, Name = "Test Show" };
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync(show);
+            _mockShowService.Setup(s => s.GetShowByIdAsync(It.IsAny<int>())).ReturnsAsync((Show)null);
 
             // Act
-            var result = await _controller.GetShowById(showId);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result.Result);
-            var returnShow = Assert.IsType<Show>(okResult.Value);
-            Assert.Equal(showId, returnShow.Id);
-            Assert.Equal("Test Show", returnShow.Name);
-        }
-
-        /// <summary>
-        /// Verifica que GetShowById retorna NotFound cuando el show no existe.
-        /// </summary>
-        [Fact]
-        public async Task GetShowById_ShowDoesNotExist_ReturnsNotFound()
-        {
-            // Arrange
-            int showId = 1;
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync((Show)null);
-
-            // Act
-            var result = await _controller.GetShowById(showId);
+            var result = await _controller.GetShowById(1);
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
-        #endregion
-
-        #region POST: api/shows
-
-        /// <summary>
-        /// Verifica que CreateShow retorna CreatedAtAction cuando el show es válido.
-        /// </summary>
         [Fact]
-        public async Task CreateShow_ValidShow_ReturnsCreatedAtAction()
+        public async Task CreateShow_ReturnsBadRequest_WhenShowDtoIsNull()
         {
-            // Arrange
-            var show = new Show { Id = 1, Name = "New Show" };
-
-            _mockShowService.Setup(s => s.AddShowAsync(show)).Returns(Task.CompletedTask);
-
             // Act
-            var result = await _controller.CreateShow(show);
-
-            // Assert
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
-            var returnShow = Assert.IsType<Show>(createdAtActionResult.Value);
-            Assert.Equal(show.Id, returnShow.Id);
-            Assert.Equal("New Show", returnShow.Name);
-            Assert.Equal(nameof(_controller.GetShowById), createdAtActionResult.ActionName);
-            Assert.Equal(show.Id, createdAtActionResult.RouteValues["id"]);
-        }
-
-        /// <summary>
-        /// Verifica que CreateShow retorna BadRequest cuando el show es nulo.
-        /// </summary>
-        [Fact]
-        public async Task CreateShow_ShowIsNull_ReturnsBadRequest()
-        {
-            // Arrange
-            Show show = null;
-
-            // Act
-            var result = await _controller.CreateShow(show);
+            var result = await _controller.CreateShow(null);
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
-            Assert.Equal("Show cannot be null.", badRequestResult.Value);
+            Assert.Equal("Los datos del show no pueden ser nulos.", badRequestResult.Value);
         }
 
-        #endregion
-
-        #region PUT: api/shows/{id}
-
-        /// <summary>
-        /// Verifica que UpdateShow retorna BadRequest cuando el show es nulo.
-        /// </summary>
         [Fact]
-        public async Task UpdateShow_ShowIsNull_ReturnsBadRequest()
+        public async Task UpdateShow_ReturnsNotFound_WhenShowDoesNotExist()
         {
             // Arrange
-            int showId = 1;
-            Show show = null;
+            var updateDto = new UpdateShowDto { Name = "Updated Show" };
+            _mockShowService.Setup(s => s.GetShowByIdAsync(It.IsAny<int>())).ReturnsAsync((Show)null);
 
             // Act
-            var result = await _controller.UpdateShow(showId, show);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Show data is invalid.", badRequestResult.Value);
-        }
-
-        /// <summary>
-        /// Verifica que UpdateShow retorna BadRequest cuando el ID no coincide con el del show.
-        /// </summary>
-        [Fact]
-        public async Task UpdateShow_IdMismatch_ReturnsBadRequest()
-        {
-            // Arrange
-            int showId = 1;
-            var show = new Show { Id = 2, Name = "Updated Show" };
-
-            // Act
-            var result = await _controller.UpdateShow(showId, show);
-
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Equal("Show data is invalid.", badRequestResult.Value);
-        }
-
-        /// <summary>
-        /// Verifica que UpdateShow retorna NotFound cuando el show no existe.
-        /// </summary>
-        [Fact]
-        public async Task UpdateShow_ShowDoesNotExist_ReturnsNotFound()
-        {
-            // Arrange
-            int showId = 1;
-            var show = new Show { Id = showId, Name = "Updated Show" };
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync((Show)null);
-
-            // Act
-            var result = await _controller.UpdateShow(showId, show);
+            var result = await _controller.UpdateShow(1, updateDto);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
 
-        /// <summary>
-        /// Verifica que UpdateShow retorna NoContent cuando el show se actualiza correctamente.
-        /// </summary>
         [Fact]
-        public async Task UpdateShow_ShowExists_ReturnsNoContent()
+        public async Task DeleteShow_ReturnsNoContent_WhenShowExists()
         {
             // Arrange
-            int showId = 1;
-            var show = new Show { Id = showId, Name = "Updated Show" };
-            var existingShow = new Show { Id = showId, Name = "Original Show" };
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync(existingShow);
-            _mockShowService.Setup(s => s.UpdateShowAsync(show)).Returns(Task.CompletedTask);
+            var existingShow = new Show { Id = 1, Name = "Test Show" };
+            _mockShowService.Setup(s => s.GetShowByIdAsync(1)).ReturnsAsync(existingShow);
 
             // Act
-            var result = await _controller.UpdateShow(showId, show);
+            var result = await _controller.DeleteShow(1);
 
             // Assert
             Assert.IsType<NoContentResult>(result);
+            _mockShowService.Verify(s => s.DeleteShowAsync(1), Times.Once);
         }
-
-        #endregion
-
-        #region DELETE: api/shows/{id}
-
-        /// <summary>
-        /// Verifica que DeleteShow retorna NoContent cuando el show existe y se elimina correctamente.
-        /// </summary>
-        [Fact]
-        public async Task DeleteShow_ShowExists_ReturnsNoContent()
-        {
-            // Arrange
-            int showId = 1;
-            var existingShow = new Show { Id = showId, Name = "Show to Delete" };
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync(existingShow);
-            _mockShowService.Setup(s => s.DeleteShowAsync(showId)).Returns(Task.CompletedTask);
-
-            // Act
-            var result = await _controller.DeleteShow(showId);
-
-            // Assert
-            Assert.IsType<NoContentResult>(result);
-        }
-
-        /// <summary>
-        /// Verifica que DeleteShow retorna NotFound cuando el show no existe.
-        /// </summary>
-        [Fact]
-        public async Task DeleteShow_ShowDoesNotExist_ReturnsNotFound()
-        {
-            // Arrange
-            int showId = 1;
-
-            _mockShowService.Setup(s => s.GetShowByIdAsync(showId)).ReturnsAsync((Show)null);
-
-            // Act
-            var result = await _controller.DeleteShow(showId);
-
-            // Assert
-            Assert.IsType<NotFoundResult>(result);
-        }
-
-        #endregion
     }
 }

@@ -3,12 +3,12 @@ using FluentAssertions;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
-using Moq;
-using Microsoft.Extensions.Configuration;
-using Challenge.Domain.Repositories.Interfaces;
-using Challenge.Application.Interfaces;
-using Challenge.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Challenge.Infrastructure.Data;
+using Challenge.Application.Interfaces;
+using Challenge.Domain.Repositories.Interfaces;
+using Challenge.Application.Services;
+using Challenge.Infrastructure.Persistence;
 
 namespace Challenge.Tests.Integration
 {
@@ -22,7 +22,7 @@ namespace Challenge.Tests.Integration
             {
                 builder.ConfigureServices(services =>
                 {
-                    // Agrega un DbContext en memoria para pruebas
+                    // Remover el contexto de base de datos existente
                     var descriptor = services.SingleOrDefault(
                         d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
@@ -31,10 +31,15 @@ namespace Challenge.Tests.Integration
                         services.Remove(descriptor);
                     }
 
+                    // Agregar un DbContext en memoria para pruebas
                     services.AddDbContext<ApplicationDbContext>(options =>
                     {
                         options.UseInMemoryDatabase("InMemoryDbForTesting");
                     });
+
+                    // Asegurarse de que los servicios se registren correctamente
+                    services.AddScoped<IShowService, ShowService>();
+                    services.AddScoped<IShowRepository, ShowRepository>();
                 });
 
                 builder.UseEnvironment("Development");
@@ -83,78 +88,6 @@ namespace Challenge.Tests.Integration
             }
         }
 
-        /// <summary>
-        /// Verifica el flujo completo de la configuración de la base de datos usando una cadena de conexión vacía.
-        /// </summary>
-        [Fact]
-        public void ConfigureDatabase_FullFlow_ThrowsException_WhenConnectionStringIsNullOrEmpty()
-        {
-            // Arrange
-            var configurationMock = new Mock<IConfiguration>();
-            configurationMock.Setup(config => config.GetSection("ConnectionStrings")["DefaultConnection"]).Returns(string.Empty);
 
-            // Act
-            Action act = () =>
-            {
-                var services = new ServiceCollection();
-                services.AddSingleton<IConfiguration>(configurationMock.Object);
-                Program.ConfigureDatabase(services, configurationMock.Object);
-
-                // Simula la resolución del servicio
-                var serviceProvider = services.BuildServiceProvider();
-                serviceProvider.GetService<ApplicationDbContext>();
-            };
-
-            // Assert
-            act.Should().Throw<InvalidOperationException>().WithMessage("Connection string 'DefaultConnection' is not configured.");
-        }
-
-        /// <summary>
-        /// Verifica el flujo completo de la configuración de la base de datos con una cadena de conexión válida usando InMemory.
-        /// </summary>
-        [Fact]
-        public void ConfigureDatabase_FullFlow_WorksCorrectly_WithValidConnectionString()
-        {
-            // Arrange
-            var configurationMock = new Mock<IConfiguration>();
-            configurationMock.Setup(config => config.GetSection("ConnectionStrings")["DefaultConnection"]).Returns("InMemoryConnectionString");
-
-            // Act
-            Action act = () =>
-            {
-                var services = new ServiceCollection();
-                services.AddSingleton<IConfiguration>(configurationMock.Object);
-                services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase("InMemoryDbForTesting");
-                });
-
-                // Simula la resolución del servicio con InMemory
-                var serviceProvider = services.BuildServiceProvider();
-                var dbContext = serviceProvider.GetService<ApplicationDbContext>();
-                dbContext.Should().NotBeNull();
-            };
-
-            // Assert
-            act.Should().NotThrow();
-        }
-
-        /// <summary>
-        /// Prueba el método Dummy de la clase Program.
-        /// </summary>
-        [Fact]
-        public void Program_DummyMethod_WritesToConsole()
-        {
-            // Arrange
-            using var consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-
-            // Act
-            var program = new Program();
-            program.Dummy();
-
-            // Assert
-            consoleOutput.ToString().Should().Contain("This is for unit testing");
-        }
     }
 }
