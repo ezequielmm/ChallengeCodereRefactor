@@ -4,20 +4,18 @@ using System.Text.Json.Serialization;
 
 namespace Challenge.Domain.Entities
 {
-    /// <summary>
-    /// Modelo para el rating de un show.
-    /// </summary>
     public class Rating
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [ForeignKey("Show")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        public int ShowId { get; set; }
+        [ForeignKey("ShowId")]
+        [JsonIgnore]
+        public Show Show { get; set; }
 
         [JsonPropertyName("average")]
         public double? Average { get; set; }
-
-        [JsonIgnore]
-        public Show Show { get; set; }
     }
 }

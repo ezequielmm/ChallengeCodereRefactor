@@ -40,17 +40,11 @@ namespace Challenge.UI.Controllers
                 return Unauthorized("Invalid API key.");
             }
 
-            try
-            {
+
                 // Ejecuta el servicio para obtener y almacenar shows
                 await _showService.FetchAndStoreShowsAsync();
                 return Ok("Job executed successfully.");
-            }
-            catch (Exception ex)
-            {
-                // En caso de error, devuelve un código 500
-                return StatusCode(500, "An error occurred while executing the job.");
-            }
+
         }
     }
 }

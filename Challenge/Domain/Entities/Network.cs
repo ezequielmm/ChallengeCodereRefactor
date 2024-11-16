@@ -4,20 +4,17 @@ using System.Text.Json.Serialization;
 
 namespace Challenge.Domain.Entities
 {
-    /// <summary>
-    /// Modelo para la network de un show.
-    /// </summary>
     public class Network
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
-        [ForeignKey("Country")]
         public string CountryCode { get; set; }
+        [ForeignKey("CountryCode")]
         public Country Country { get; set; }
 
         [JsonIgnore]

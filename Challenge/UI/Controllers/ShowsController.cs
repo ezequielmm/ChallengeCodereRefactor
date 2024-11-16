@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Challenge.Domain.Entities;
 using Challenge.Application.Interfaces;
+using Challenge.Application.DTOs;
 
 namespace Challenge.UI.Controllers
 {
@@ -57,16 +58,59 @@ namespace Challenge.UI.Controllers
         /// <param name="show">Objeto show a crear.</param>
         /// <returns>El show creado.</returns>
         [HttpPost]
-        public async Task<ActionResult<Show>> CreateShow([FromBody] Show show)
+        public async Task<ActionResult<Show>> CreateShow([FromBody] CreateShowDto showDto)
         {
-            if (show == null)
+            if (showDto == null)
             {
-                return BadRequest("Show cannot be null.");
+                return BadRequest("Los datos del Show no pueden ser nulos.");
+            }
+
+            var show = new Show
+            {
+                Name = showDto.Name,
+                Language = showDto.Language,
+                Externals = showDto.Externals != null ? new Externals
+                {
+                    Imdb = showDto.Externals.Imdb,
+                    Tvrage = showDto.Externals.Tvrage,
+                    Thetvdb = showDto.Externals.Thetvdb
+                } : null,
+                Rating = showDto.Rating != null ? new Rating
+                {
+                    Average = showDto.Rating.Average
+                } : null,
+                Network = showDto.Network != null ? new Network
+                {
+                    Id = showDto.Network.Id ?? 0, // Si es nueva, el Id será 0
+                    Name = showDto.Network.Name,
+                    Country = showDto.Network.Country != null ? new Country
+                    {
+                        Code = showDto.Network.Country.Code,
+                        Name = showDto.Network.Country.Name,
+                        Timezone = showDto.Network.Country.Timezone
+                    } : null
+                } : null,
+                Genres = new List<Genre>()
+            };
+
+            // Manejo de Géneros
+            if (showDto.Genres != null)
+            {
+                foreach (var genreName in showDto.Genres)
+                {
+                    if (!string.IsNullOrWhiteSpace(genreName))
+                    {
+                        show.Genres.Add(new Genre { Name = genreName });
+                    }
+                }
             }
 
             await _showService.AddShowAsync(show);
+
             return CreatedAtAction(nameof(GetShowById), new { id = show.Id }, show);
         }
+
+
 
         /// <summary>
         /// Actualiza un show existente.

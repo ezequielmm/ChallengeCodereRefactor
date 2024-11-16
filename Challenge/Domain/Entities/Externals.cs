@@ -4,26 +4,24 @@ using System.Text.Json.Serialization;
 
 namespace Challenge.Domain.Entities
 {
-    /// <summary>
-    /// Modelo para los datos externos de un show.
-    /// </summary>
     public class Externals
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [ForeignKey("Show")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int ShowId { get; set; }
+        [ForeignKey("ShowId")]
+        [JsonIgnore]
+        public Show Show { get; set; }
+
         [JsonPropertyName("imdb")]
-        public string? Imdb { get; set; }
+        public string? Imdb { get; set; } // Propiedad nullable
 
         [JsonPropertyName("tvrage")]
         public int? Tvrage { get; set; }
 
         [JsonPropertyName("thetvdb")]
         public int? Thetvdb { get; set; }
-
-        [JsonIgnore]
-        public Show Show { get; set; }
     }
 }

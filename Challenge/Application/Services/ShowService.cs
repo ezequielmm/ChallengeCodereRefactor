@@ -40,7 +40,7 @@ namespace Challenge.Application.Services
                 throw new ArgumentException("ApiUrl configuration is missing or empty.", nameof(configuration));
         }
 
-        /// <inheritdoc />
+
         public async Task FetchAndStoreShowsAsync()
         {
             var client = _httpClientFactory.CreateClient();
@@ -81,7 +81,6 @@ namespace Challenge.Application.Services
                 // Mapea el DTO a la entidad Show
                 var show = new Show
                 {
-                    Id = showDto.Id,
                     Name = showDto.Name,
                     Language = showDto.Language,
                     Genres = new List<Genre>()
@@ -97,7 +96,8 @@ namespace Challenge.Application.Services
                     {
                         Imdb = showDto.Externals.Imdb,
                         Tvrage = showDto.Externals.Tvrage,
-                        Thetvdb = showDto.Externals.Thetvdb
+                        Thetvdb = showDto.Externals.Thetvdb,
+                        Show = show
                     };
                 }
 
@@ -106,7 +106,8 @@ namespace Challenge.Application.Services
                 {
                     show.Rating = new Rating
                     {
-                        Average = showDto.Rating.Average
+                        Average = showDto.Rating.Average,
+                        Show = show
                     };
                 }
 
@@ -128,44 +129,288 @@ namespace Challenge.Application.Services
             }
         }
 
-        /// <inheritdoc />
+
+
         public async Task<IEnumerable<Show>> GetAllShowsAsync()
         {
             // Obtiene todos los shows desde el repositorio
             return await _showRepository.GetAllShowsAsync();
         }
 
-        /// <inheritdoc />
+
         public async Task<Show> GetShowByIdAsync(int id)
         {
             // Obtiene un show específico por su ID desde el repositorio
             return await _showRepository.GetShowByIdAsync(id);
         }
 
-        /// <inheritdoc />
+
         public async Task AddShowAsync(Show show)
         {
-            // Agrega un nuevo show y guarda los cambios
-            await _showRepository.AddShowAsync(show);
+            if (show == null)
+                throw new ArgumentNullException(nameof(show));
+
+            // Manejo de Network
+            if (show.Network != null)
+            {
+                if (show.Network.Id > 0)
+                {
+                    // Network existente
+                    var existingNetwork = await _context.Networks
+                        .Include(n => n.Country)
+                        .FirstOrDefaultAsync(n => n.Id == show.Network.Id);
+
+                    if (existingNetwork != null)
+                    {
+                        show.Network = existingNetwork;
+                    }
+                    else
+                    {
+                        // Manejo del Country de la Network
+                        if (show.Network.Country != null)
+                        {
+                            var existingCountry = await _context.Countries
+                                .FirstOrDefaultAsync(c => c.Code == show.Network.Country.Code);
+
+                            if (existingCountry != null)
+                            {
+                                show.Network.Country = existingCountry;
+                            }
+                            else
+                            {
+                                _context.Countries.Add(show.Network.Country);
+                            }
+                        }
+                        _context.Networks.Add(show.Network);
+                    }
+                }
+                else
+                {
+                    // Network nueva
+                    if (show.Network.Country != null)
+                    {
+                        var existingCountry = await _context.Countries
+                            .FirstOrDefaultAsync(c => c.Code == show.Network.Country.Code);
+
+                        if (existingCountry != null)
+                        {
+                            show.Network.Country = existingCountry;
+                        }
+                        else
+                        {
+                            _context.Countries.Add(show.Network.Country);
+                        }
+                    }
+                    _context.Networks.Add(show.Network);
+                }
+            }
+
+            // Manejo de Géneros
+            if (show.Genres != null && show.Genres.Any())
+            {
+                var genreNames = show.Genres.Select(g => g.Name).ToList();
+                var existingGenres = await _context.Genres
+                    .Where(g => genreNames.Contains(g.Name))
+                    .ToListAsync();
+
+                var newGenres = show.Genres.Where(g => !existingGenres.Any(eg => eg.Name == g.Name)).ToList();
+
+                show.Genres = existingGenres.Concat(newGenres).ToList();
+
+                foreach (var genre in newGenres)
+                {
+                    _context.Genres.Add(genre);
+                }
+            }
+
+            // Manejo de Externals
+            if (show.Externals != null)
+            {
+                show.Externals.Show = show;
+                _context.Externals.Add(show.Externals);
+            }
+
+            // Manejo de Rating
+            if (show.Rating != null)
+            {
+                show.Rating.Show = show;
+                _context.Ratings.Add(show.Rating);
+            }
+
+            // Agrega el show al contexto
+            await _context.Shows.AddAsync(show);
+
+            // Guarda los cambios
             await _showRepository.SaveChangesAsync();
         }
 
-        /// <inheritdoc />
+
         public async Task UpdateShowAsync(Show show)
         {
-            // Actualiza un show existente y guarda los cambios
-            _showRepository.UpdateShow(show);
+            if (show == null)
+                throw new ArgumentNullException(nameof(show));
+
+            // Obtiene el show existente
+            var existingShow = await _context.Shows
+                .Include(s => s.Genres)
+                .Include(s => s.Externals)
+                .Include(s => s.Rating)
+                .Include(s => s.Network)
+                    .ThenInclude(n => n.Country)
+                .FirstOrDefaultAsync(s => s.Id == show.Id);
+
+            if (existingShow == null)
+                throw new InvalidOperationException("Show not found.");
+
+            // Actualiza las propiedades del show
+            existingShow.Name = show.Name;
+            existingShow.Language = show.Language;
+
+            // Manejo de Network
+            if (show.Network != null)
+            {
+                if (show.Network.Id > 0)
+                {
+                    // Network existente
+                    var existingNetwork = await _context.Networks
+                        .Include(n => n.Country)
+                        .FirstOrDefaultAsync(n => n.Id == show.Network.Id);
+
+                    if (existingNetwork != null)
+                    {
+                        existingShow.Network = existingNetwork;
+                    }
+                    else
+                    {
+                        // Manejo del Country de la Network
+                        if (show.Network.Country != null)
+                        {
+                            var existingCountry = await _context.Countries
+                                .FirstOrDefaultAsync(c => c.Code == show.Network.Country.Code);
+
+                            if (existingCountry != null)
+                            {
+                                show.Network.Country = existingCountry;
+                            }
+                            else
+                            {
+                                _context.Countries.Add(show.Network.Country);
+                            }
+                        }
+                        _context.Networks.Add(show.Network);
+                        existingShow.Network = show.Network;
+                    }
+                }
+                else
+                {
+                    // Network nueva
+                    if (show.Network.Country != null)
+                    {
+                        var existingCountry = await _context.Countries
+                            .FirstOrDefaultAsync(c => c.Code == show.Network.Country.Code);
+
+                        if (existingCountry != null)
+                        {
+                            show.Network.Country = existingCountry;
+                        }
+                        else
+                        {
+                            _context.Countries.Add(show.Network.Country);
+                        }
+                    }
+                    _context.Networks.Add(show.Network);
+                    existingShow.Network = show.Network;
+                }
+            }
+            else
+            {
+                existingShow.Network = null;
+            }
+
+            // Manejo de Externals
+            if (show.Externals != null)
+            {
+                if (existingShow.Externals == null)
+                {
+                    show.Externals.Show = existingShow;
+                    _context.Externals.Add(show.Externals);
+                    existingShow.Externals = show.Externals;
+                }
+                else
+                {
+                    existingShow.Externals.Imdb = show.Externals.Imdb;
+                    existingShow.Externals.Tvrage = show.Externals.Tvrage;
+                    existingShow.Externals.Thetvdb = show.Externals.Thetvdb;
+                }
+            }
+            else
+            {
+                if (existingShow.Externals != null)
+                {
+                    _context.Externals.Remove(existingShow.Externals);
+                    existingShow.Externals = null;
+                }
+            }
+
+            // Manejo de Rating
+            if (show.Rating != null)
+            {
+                if (existingShow.Rating == null)
+                {
+                    show.Rating.Show = existingShow;
+                    _context.Ratings.Add(show.Rating);
+                    existingShow.Rating = show.Rating;
+                }
+                else
+                {
+                    existingShow.Rating.Average = show.Rating.Average;
+                }
+            }
+            else
+            {
+                if (existingShow.Rating != null)
+                {
+                    _context.Ratings.Remove(existingShow.Rating);
+                    existingShow.Rating = null;
+                }
+            }
+
+            // Manejo de Géneros
+            if (show.Genres != null && show.Genres.Any())
+            {
+                // Limpia los géneros actuales
+                existingShow.Genres.Clear();
+
+                // Adjunta los nuevos géneros
+                var genreNames = show.Genres.Select(g => g.Name).ToList();
+                var existingGenres = await _context.Genres
+                    .Where(g => genreNames.Contains(g.Name))
+                    .ToListAsync();
+
+                var newGenres = show.Genres.Where(g => !existingGenres.Any(eg => eg.Name == g.Name)).ToList();
+
+                foreach (var genre in newGenres)
+                {
+                    _context.Genres.Add(genre);
+                }
+
+                existingShow.Genres = existingGenres.Concat(newGenres).ToList();
+            }
+            else
+            {
+                existingShow.Genres.Clear();
+            }
+
+            // Guarda los cambios
             await _showRepository.SaveChangesAsync();
         }
 
-        /// <inheritdoc />
+
         public async Task DeleteShowAsync(int id)
         {
-            // Obtiene el show por ID
             var show = await _showRepository.GetShowByIdAsync(id);
             if (show != null)
             {
-                // Si existe, lo elimina y guarda los cambios
                 _showRepository.DeleteShow(show);
                 await _showRepository.SaveChangesAsync();
             }
@@ -185,9 +430,8 @@ namespace Challenge.Application.Services
             {
                 if (string.IsNullOrWhiteSpace(genreName)) continue;
 
-                // Busca el género en el contexto local o en la base de datos
-                var genre = _context.Genres.Local.FirstOrDefault(g => g.Name == genreName)
-                             ?? await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
+                // Busca el género en el contexto o en la base de datos
+                var genre = await _context.Genres.FirstOrDefaultAsync(g => g.Name == genreName);
                 if (genre == null)
                 {
                     // Si el género no existe, lo crea
@@ -205,26 +449,44 @@ namespace Challenge.Application.Services
         /// <returns>La network correspondiente.</returns>
         private async Task<Network> GetOrCreateNetworkAsync(NetworkDto networkDto)
         {
-            // Busca la network en el contexto local o en la base de datos
-            var existingNetwork = _context.Networks.Local.FirstOrDefault(n => n.Id == networkDto.Id)
-                                  ?? await _context.Networks.FirstOrDefaultAsync(n => n.Id == networkDto.Id);
+            if (networkDto == null)
+                return null;
+
+            // Primero, verifica si el contexto ya está rastreando la Network en su caché local
+            var existingNetwork = _context.Networks.Local.FirstOrDefault(n => n.Id == networkDto.Id);
+            if (existingNetwork != null)
+            {
+                return existingNetwork; // Retorna la Network ya rastreada
+            }
+
+            // Si no está en la caché local, busca en la base de datos
+            existingNetwork = await _context.Networks
+                .Include(n => n.Country)
+                .FirstOrDefaultAsync(n => n.Id == networkDto.Id);
 
             if (existingNetwork != null)
             {
-                return existingNetwork; // Retorna la network existente
+                return existingNetwork; // Retorna la Network existente
             }
 
-            // Crea una nueva network
+            // Maneja el país
+            Country country = null;
+            if (networkDto.Country != null)
+            {
+                country = await GetOrCreateCountryAsync(networkDto.Country);
+            }
+
+            // Crea una nueva Network
             var newNetwork = new Network
             {
-                Id = networkDto.Id,
                 Name = networkDto.Name,
-                Country = networkDto.Country != null ? await GetOrCreateCountryAsync(networkDto.Country) : null
+                Country = country
             };
 
             _context.Networks.Add(newNetwork);
             return newNetwork;
         }
+
 
         /// <summary>
         /// Obtiene un país existente o crea uno nuevo a partir del DTO proporcionado.
@@ -233,19 +495,27 @@ namespace Challenge.Application.Services
         /// <returns>El país correspondiente.</returns>
         private async Task<Country> GetOrCreateCountryAsync(CountryDto countryDto)
         {
-            // Busca el país en el contexto local o en la base de datos
-            var existingCountry = _context.Countries.Local.FirstOrDefault(c => c.Id == countryDto.Id)
-                                 ?? await _context.Countries.FirstOrDefaultAsync(c => c.Id == countryDto.Id);
+            if (countryDto == null)
+                return null;
+
+            // Primero, verifica si el contexto ya está rastreando el país en su caché local
+            var existingCountry = _context.Countries.Local.FirstOrDefault(c => c.Code == countryDto.Code);
+            if (existingCountry != null)
+            {
+                return existingCountry; // Retorna el país ya rastreado
+            }
+
+            // Si no está en la caché local, busca en la base de datos
+            existingCountry = await _context.Countries.FirstOrDefaultAsync(c => c.Code == countryDto.Code);
 
             if (existingCountry != null)
             {
                 return existingCountry; // Retorna el país existente
             }
 
-            // Crea un nuevo país
+            // Si no existe, crea un nuevo país
             var country = new Country
             {
-                Id = countryDto.Id,
                 Code = countryDto.Code,
                 Name = countryDto.Name,
                 Timezone = countryDto.Timezone
@@ -254,5 +524,6 @@ namespace Challenge.Application.Services
             _context.Countries.Add(country);
             return country;
         }
+
     }
 }

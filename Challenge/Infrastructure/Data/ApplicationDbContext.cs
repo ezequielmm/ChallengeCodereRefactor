@@ -33,28 +33,21 @@ namespace Challenge.Infrastructure.Data
         {
             // Configuración de Country
             modelBuilder.Entity<Country>()
-                .HasKey(c => c.Code);
+                .HasKey(c => c.Code); // Establece 'Code' como clave primaria
             modelBuilder.Entity<Country>()
                 .Property(c => c.Code)
-                .ValueGeneratedNever();
+                .ValueGeneratedNever(); // Indica que 'Code' no es generado por la base de datos
 
             // Configuración de Network
             modelBuilder.Entity<Network>()
                 .HasKey(n => n.Id);
             modelBuilder.Entity<Network>()
                 .Property(n => n.Id)
-                .ValueGeneratedNever();
+                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
             modelBuilder.Entity<Network>()
                 .HasOne(n => n.Country)
                 .WithMany()
                 .HasForeignKey(n => n.CountryCode)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Relación Network -> Shows (uno a muchos)
-            modelBuilder.Entity<Network>()
-                .HasMany(n => n.Shows)
-                .WithOne(s => s.Network)
-                .HasForeignKey(s => s.NetworkId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             // Configuración de Show
@@ -62,39 +55,38 @@ namespace Challenge.Infrastructure.Data
                 .HasKey(s => s.Id);
             modelBuilder.Entity<Show>()
                 .Property(s => s.Id)
-                .ValueGeneratedNever();
+                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
 
             // Configuración de Externals
             modelBuilder.Entity<Externals>()
                 .HasKey(e => e.Id);
             modelBuilder.Entity<Externals>()
                 .Property(e => e.Id)
-                .ValueGeneratedNever();
-            modelBuilder.Entity<Externals>()
-                .Property(e => e.Imdb)
-                .IsRequired(false); // Permite nulos en Imdb
+                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
             modelBuilder.Entity<Externals>()
                 .HasOne(e => e.Show)
                 .WithOne(s => s.Externals)
-                .HasForeignKey<Externals>(e => e.Id);
+                .HasForeignKey<Externals>(e => e.ShowId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configuración de Rating
             modelBuilder.Entity<Rating>()
                 .HasKey(r => r.Id);
             modelBuilder.Entity<Rating>()
                 .Property(r => r.Id)
-                .ValueGeneratedNever();
+                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
             modelBuilder.Entity<Rating>()
                 .HasOne(r => r.Show)
                 .WithOne(s => s.Rating)
-                .HasForeignKey<Rating>(r => r.Id);
+                .HasForeignKey<Rating>(r => r.ShowId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configuración de Genre
             modelBuilder.Entity<Genre>()
                 .HasKey(g => g.Id);
             modelBuilder.Entity<Genre>()
                 .Property(g => g.Id)
-                .ValueGeneratedOnAdd();
+                .ValueGeneratedOnAdd(); // 'Id' generado por la base de datos
 
             // Relación Show -> Genre (muchos a muchos)
             modelBuilder.Entity<Show>()

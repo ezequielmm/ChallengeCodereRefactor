@@ -21,7 +21,7 @@ namespace Challenge.Infrastructure.Persistence
             _context = context;
         }
 
-        /// <inheritdoc />
+
         public async Task<IEnumerable<Show>> GetAllShowsAsync()
         {
             // Obtiene todos los shows incluyendo sus relaciones
@@ -35,7 +35,7 @@ namespace Challenge.Infrastructure.Persistence
                 .ToListAsync();
         }
 
-        /// <inheritdoc />
+
         public async Task<Show> GetShowByIdAsync(int id)
         {
             // Busca un show por su ID incluyendo sus relaciones
@@ -48,28 +48,28 @@ namespace Challenge.Infrastructure.Persistence
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
-        /// <inheritdoc />
+
         public async Task AddShowAsync(Show show)
         {
             // Agrega un nuevo show al contexto
             await _context.Shows.AddAsync(show);
         }
 
-        /// <inheritdoc />
+
         public void UpdateShow(Show show)
         {
             // Actualiza el show en el contexto
             _context.Shows.Update(show);
         }
 
-        /// <inheritdoc />
+
         public void DeleteShow(Show show)
         {
             // Elimina el show del contexto
             _context.Shows.Remove(show);
         }
 
-        /// <inheritdoc />
+
         public async Task SaveChangesAsync()
         {
             // Guarda los cambios en la base de datos
