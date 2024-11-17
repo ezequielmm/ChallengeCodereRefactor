@@ -32,25 +32,23 @@ namespace Challenge.UI.Controllers
         [HttpPost("run")]
         public async Task<IActionResult> RunJob([FromHeader(Name = "x-api-key")] string apiKey)
         {
-            // Obtiene la clave API configurada
             var configuredApiKey = _configuration["ApiKey"];
             if (apiKey != configuredApiKey)
             {
-                // Si la clave API no coincide, devuelve No Autorizado
                 return Unauthorized("Invalid API key.");
             }
 
             try
             {
-                // Ejecuta el servicio para obtener y almacenar shows
                 await _showService.FetchAndStoreShowsAsync();
                 return Ok("Job executed successfully.");
             }
             catch (Exception ex)
             {
-                // En caso de error, devuelve un código 500
+                // Log the exception if necessary
                 return StatusCode(500, "An error occurred while executing the job.");
             }
         }
+
     }
 }

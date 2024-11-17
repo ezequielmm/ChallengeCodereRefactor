@@ -7,8 +7,11 @@ namespace Challenge.Domain.Entities
     public class Show
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
+
+
+        public int ExternalId { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
@@ -20,6 +23,7 @@ namespace Challenge.Domain.Entities
         public Network Network { get; set; }
 
         public Externals Externals { get; set; }
+
         public Rating Rating { get; set; }
 
         public ICollection<Genre> Genres { get; set; } = new List<Genre>();

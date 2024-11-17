@@ -71,12 +71,14 @@ namespace Challenge.UI.Controllers
             }
 
             // Mapear el DTO a la entidad Show
-            var show = new Show
-            {
-                Name = showDto.Name,
-                Language = showDto.Language,
-                Genres = new List<Genre>()
-            };
+                var show = new Show
+                {
+                    ExternalId = showDto.Id,
+                    Name = showDto.Name,
+                    Language = showDto.Language,
+                    Genres = new List<Genre>()
+                };
+
 
             // Manejo de Network
             if (showDto.Network != null)
@@ -260,16 +262,25 @@ namespace Challenge.UI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShow(int id)
         {
-            var existingShow = await _showService.GetShowByIdAsync(id);
-
-            if (existingShow == null)
+            try
             {
-                return NotFound();
-            }
+                var existingShow = await _showService.GetShowByIdAsync(id);
 
-            await _showService.DeleteShowAsync(id);
-            return NoContent();
+                if (existingShow == null)
+                {
+                    return NotFound();
+                }
+
+                await _showService.DeleteShowAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
+
 
         // Métodos auxiliares para manejar entidades relacionadas
 

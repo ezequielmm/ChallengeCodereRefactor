@@ -54,16 +54,23 @@ namespace Challenge.Tests.UITests
         public async Task RunJob_ReturnsInternalServerError_OnException()
         {
             // Arrange
-            _mockConfiguration.Setup(c => c["ApiKey"]).Returns("valid-api-key");
-            _mockShowService.Setup(s => s.FetchAndStoreShowsAsync()).ThrowsAsync(new Exception("Test exception"));
+            var apiKey = "valid-api-key";
+            _mockConfiguration.Setup(c => c["ApiKey"]).Returns(apiKey);
+            _mockShowService
+                .Setup(s => s.FetchAndStoreShowsAsync())
+                .ThrowsAsync(new Exception("Test exception"));
 
             // Act
-            var result = await _controller.RunJob("valid-api-key");
+            var result = await _controller.RunJob(apiKey);
 
             // Assert
             var objectResult = Assert.IsType<ObjectResult>(result);
             Assert.Equal(500, objectResult.StatusCode);
-            Assert.Equal("An error occurred while executing the job.", objectResult.Value);
+
+            // The Value might be an error message or an error object; adjust accordingly
+            var expectedMessage = "An error occurred while executing the job.";
+            Assert.Equal(expectedMessage, objectResult.Value);
         }
+
     }
 }

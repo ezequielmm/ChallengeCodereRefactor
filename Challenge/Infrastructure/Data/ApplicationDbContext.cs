@@ -64,6 +64,7 @@ namespace Challenge.Infrastructure.Data
                 .HasForeignKey<Externals>(e => e.ShowId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+
             // Configuración de Rating
             modelBuilder.Entity<Rating>()
                 .HasOne(r => r.Show)

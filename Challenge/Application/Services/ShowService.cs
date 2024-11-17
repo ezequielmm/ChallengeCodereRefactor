@@ -81,10 +81,13 @@ namespace Challenge.Application.Services
                 // Mapea el DTO a la entidad Show
                 var show = new Show
                 {
+                    ExternalId = showDto.Id,
                     Name = showDto.Name,
                     Language = showDto.Language,
                     Genres = new List<Genre>()
                 };
+
+
 
                 // Agrega los géneros al show
                 await AddGenresToShowAsync(show, showDto.Genres);
@@ -260,17 +263,24 @@ namespace Challenge.Application.Services
         }
 
 
-
-
         public async Task DeleteShowAsync(int id)
         {
-            var show = await _showRepository.GetShowByIdAsync(id);
-            if (show != null)
+            try
             {
-                _showRepository.DeleteShow(show);
-                await _showRepository.SaveChangesAsync();
+                var show = await _showRepository.GetShowByIdAsync(id);
+                if (show != null)
+                {
+                    _showRepository.DeleteShow(show);
+                    await _showRepository.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or throw it to be handled by the controller
+                throw new Exception("An error occurred while deleting the show.", ex);
             }
         }
+
 
         /// <summary>
         /// Agrega géneros al show, creando nuevos géneros si no existen.

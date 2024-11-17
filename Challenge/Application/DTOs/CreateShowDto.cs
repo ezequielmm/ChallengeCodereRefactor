@@ -7,6 +7,7 @@ namespace Challenge.Application.DTOs
     /// </summary>
     public class CreateShowDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Language { get; set; }
         public CreateNetworkDto Network { get; set; }
