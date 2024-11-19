@@ -1,12 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-public class CreateCountryDto
+namespace Challenge.Application.DTOs
 {
-    [Required]
-    public string Code { get; set; } // Identificador único del Country
+    public class CreateCountryDto
+    {
+        [Required]
+        public string Code { get; set; } // Identificador único del Country
 
-    [Required]
-    public string Name { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-    public string Timezone { get; set; }
+        public string Timezone { get; set; }
+    }
 }
