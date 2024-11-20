@@ -1,303 +1,393 @@
-using Moq;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
-using Challenge.Domain.Entities;
-using Challenge.Application.Services;
-using Challenge.Infrastructure.Data;
-using Challenge.Domain.Repositories.Interfaces;
-using Challenge.Application.DTOs;
-using Moq.Protected;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Xunit;
-using System.Collections.Generic;
+using Challenge.Application.DTOs;
+using Challenge.Application.Services;
+using Challenge.Domain.Entities;
+using Challenge.Domain.Repositories.Interfaces;
+using Challenge.Infrastructure.Data;
 using Challenge.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Moq;
+using Moq.Protected;
+using Xunit;
 
-namespace Challenge.Tests.ApplicationTests
+namespace Challenge.Application.Tests
 {
-    public class ShowServiceTests : IDisposable
+    public class ShowServiceTests
     {
-        private readonly IShowRepository _repository;
+        private readonly Mock<IShowRepository> _showRepositoryMock;
         private readonly ApplicationDbContext _context;
-        private readonly Mock<IHttpClientFactory> _mockHttpClientFactory;
-        private readonly IConfiguration _configuration;
-        private readonly ShowService _service;
+        private readonly Mock<IHttpClientFactory> _httpClientFactoryMock;
+        private readonly Mock<IConfiguration> _configurationMock;
+        private readonly ShowService _showService;
 
         public ShowServiceTests()
         {
-            // Configuración de la base de datos en memoria con un nombre único para cada prueba
+            _showRepositoryMock = new Mock<IShowRepository>();
+
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString()) // Base de datos única para cada prueba
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
+
             _context = new ApplicationDbContext(options);
 
-            // Inicialización del repositorio real
-            _repository = new ShowRepository(_context);
+            _httpClientFactoryMock = new Mock<IHttpClientFactory>();
+            _configurationMock = new Mock<IConfiguration>();
+            _configurationMock.Setup(c => c["ApiUrl"]).Returns("http://fakeapi.com/");
 
-            // Mock del IHttpClientFactory
-            _mockHttpClientFactory = new Mock<IHttpClientFactory>();
-
-            // Configuración de la aplicación con ApiUrl
-            var inMemorySettings = new Dictionary<string, string>
-            {
-                { "ApiUrl", "http://api.tvmaze.com/" }
-            };
-            _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
-                .Build();
-
-            // Inicialización del ShowService con las dependencias
-            _service = new ShowService(_repository, _context, _mockHttpClientFactory.Object, _configuration);
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
+            _showService = new ShowService(
+                _showRepositoryMock.Object,
+                _context,
+                _httpClientFactoryMock.Object,
+                _configurationMock.Object
+            );
         }
 
         [Fact]
-        public async Task FetchAndStoreShowsAsync_ShouldFetchAndStoreNewShows()
+        public void Constructor_ShouldThrowArgumentNullException_WhenShowRepositoryIsNull()
         {
-            // Arrange
-            var showsList = new List<ShowDto>
-            {
-                new ShowDto { Id = 1, Name = "Show 1", Language = "English", Genres = new List<string> { "Drama" } },
-                new ShowDto { Id = 2, Name = "Show 2", Language = "Spanish", Genres = new List<string> { "Comedy" } }
-            };
-
-            var handlerMock = new Mock<HttpMessageHandler>();
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                    ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(JsonSerializer.Serialize(showsList))
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://api.tvmaze.com/")
-            };
-
-            _mockHttpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
-            // Act
-            await _service.FetchAndStoreShowsAsync();
-
-            // Assert
-            var storedShows = await _repository.GetAllShowsAsync();
-            Assert.Equal(2, storedShows.Count());
-            Assert.Contains(storedShows, s => s.Name == "Show 1");
-            Assert.Contains(storedShows, s => s.Name == "Show 2");
-
-            // Verificar que la solicitud HTTP fue realizada correctamente
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                ItExpr.IsAny<CancellationToken>());
-        }
-
-        [Fact]
-        public async Task FetchAndStoreShowsAsync_ShouldSkipExistingShows()
-        {
-            // Arrange
-            var existingShow = new Show { Name = "Show 1", Language = "English" };
-            await _repository.AddShowAsync(existingShow);
-            await _repository.SaveChangesAsync();
-
-            var showsList = new List<ShowDto>
-            {
-                new ShowDto { Id = 1, Name = "Show 1", Language = "English", Genres = new List<string> { "Drama" } }, // Existing
-                new ShowDto { Id = 2, Name = "Show 2", Language = "Spanish", Genres = new List<string> { "Comedy" } }  // New
-            };
-
-            var handlerMock = new Mock<HttpMessageHandler>();
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                    ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(JsonSerializer.Serialize(showsList))
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://api.tvmaze.com/")
-            };
-
-            _mockHttpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
-            // Act
-            await _service.FetchAndStoreShowsAsync();
-
-            // Assert
-            var storedShows = await _repository.GetAllShowsAsync();
-            Assert.Equal(2, storedShows.Count());
-            Assert.Contains(storedShows, s => s.Name == "Show 1"); // Existing
-            Assert.Contains(storedShows, s => s.Name == "Show 2"); // New
-
-            // Verificar que la solicitud HTTP fue realizada correctamente
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                ItExpr.IsAny<CancellationToken>());
-        }
-
-        [Fact]
-        public async Task FetchAndStoreShowsAsync_ShouldHandleApiErrorGracefully()
-        {
-            // Arrange
-            var handlerMock = new Mock<HttpMessageHandler>();
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.InternalServerError
-                })
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://api.tvmaze.com/")
-            };
-
-            _mockHttpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<InvalidOperationException>(() => _service.FetchAndStoreShowsAsync());
-            Assert.Equal("Failed to fetch shows from API.", exception.Message);
-
-            // Verificar que la solicitud HTTP fue realizada correctamente
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                ItExpr.IsAny<CancellationToken>());
+            Assert.Throws<ArgumentNullException>(() => new ShowService(
+                null,
+                _context,
+                _httpClientFactoryMock.Object,
+                _configurationMock.Object
+            ));
         }
 
         [Fact]
-        public async Task FetchAndStoreShowsAsync_ShouldThrowHttpRequestException_OnHttpRequestException()
+        public void Constructor_ShouldThrowArgumentNullException_WhenContextIsNull()
         {
-            // Arrange
-            var handlerMock = new Mock<HttpMessageHandler>();
-            handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>())
-                .ThrowsAsync(new HttpRequestException("Network error"))
-                .Verifiable();
-
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://api.tvmaze.com/")
-            };
-
-            _mockHttpClientFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
-
             // Act & Assert
-            var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _service.FetchAndStoreShowsAsync());
-            Assert.Contains("Error fetching shows from API.", exception.Message);
-
-            // Verificar que la solicitud HTTP fue realizada correctamente
-            handlerMock.Protected().Verify(
-                "SendAsync",
-                Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req => req.Method == HttpMethod.Get && req.RequestUri.AbsoluteUri == "http://api.tvmaze.com/shows"),
-                ItExpr.IsAny<CancellationToken>());
+            Assert.Throws<ArgumentNullException>(() => new ShowService(
+                _showRepositoryMock.Object,
+                null,
+                _httpClientFactoryMock.Object,
+                _configurationMock.Object
+            ));
         }
 
         [Fact]
-        public async Task AddShowAsync_ShouldAddShowCorrectly()
+        public void Constructor_ShouldThrowArgumentNullException_WhenHttpClientFactoryIsNull()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new ShowService(
+                _showRepositoryMock.Object,
+                _context,
+                null,
+                _configurationMock.Object
+            ));
+        }
+
+        [Fact]
+        public void Constructor_ShouldThrowArgumentNullException_WhenConfigurationIsNull()
+        {
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => new ShowService(
+                _showRepositoryMock.Object,
+                _context,
+                _httpClientFactoryMock.Object,
+                null
+            ));
+        }
+
+
+
+        [Fact]
+        public async Task FetchAndStoreShowsAsync_ShouldFetchAndStoreShows_WhenApiReturnsData()
         {
             // Arrange
-            var newShow = new Show
+            var showsDto = new List<ShowDto>
             {
-                Name = "New Show",
-                Language = "English",
-                Genres = new List<Genre> { new Genre { Name = "Drama" } },
-                Externals = new Externals { Imdb = "tt1234567", Tvrage = 123, Thetvdb = 456 },
-                Rating = new Rating { Average = 8.5 },
-                Network = new Network
+                new ShowDto
                 {
-                    Name = "Test Network",
-                    Country = new Country { Code = "US", Name = "United States", Timezone = "America/New_York" }
+                    Id = 1,
+                    Name = "Test Show",
+                    Language = "English",
+                    Genres = new List<string> { "Drama", "Action" },
+                    Externals = new ExternalsDto
+                    {
+                        Imdb = "tt1234567",
+                        Tvrage = null,
+                        Thetvdb = null
+                    },
+                    Rating = new RatingDto
+                    {
+                        Average = 8.5
+                    },
+                    Network = new NetworkDto
+                    {
+                        Id = 1,
+                        Name = "Test Network",
+                        Country = new CountryDto
+                        {
+                            Name = "USA",
+                            Code = "US",
+                            Timezone = "America/New_York"
+                        }
+                    }
                 }
             };
 
+            var content = JsonSerializer.Serialize(showsDto);
+
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent(content),
+               })
+               .Verifiable();
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://fakeapi.com/"),
+            };
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(It.IsAny<int>())).ReturnsAsync((Show)null);
+            _showRepositoryMock.Setup(repo => repo.AddShowAsync(It.IsAny<Show>())).Returns(Task.CompletedTask);
+            _showRepositoryMock.Setup(repo => repo.SaveChangesAsync()).Returns(Task.CompletedTask);
+
             // Act
-            await _service.AddShowAsync(newShow);
+            await _showService.FetchAndStoreShowsAsync();
 
             // Assert
-            var storedShows = await _repository.GetAllShowsAsync();
-            Assert.Single(storedShows);
-            var storedShow = storedShows.First();
-            Assert.Equal("New Show", storedShow.Name);
-            Assert.Equal("English", storedShow.Language);
-            Assert.Single(storedShow.Genres);
-            Assert.Equal("Drama", storedShow.Genres.First().Name);
-            Assert.NotNull(storedShow.Externals);
-            Assert.Equal("tt1234567", storedShow.Externals.Imdb);
-            Assert.Equal(123, storedShow.Externals.Tvrage);
-            Assert.Equal(456, storedShow.Externals.Thetvdb);
-            Assert.NotNull(storedShow.Rating);
-            Assert.Equal(8.5, storedShow.Rating.Average);
-            Assert.NotNull(storedShow.Network);
-            Assert.Equal("Test Network", storedShow.Network.Name);
-            Assert.NotNull(storedShow.Network.Country);
-            Assert.Equal("US", storedShow.Network.Country.Code);
+            _showRepositoryMock.Verify(repo => repo.AddShowAsync(It.IsAny<Show>()), Times.Once);
+            _showRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task FetchAndStoreShowsAsync_ShouldNotAddExistingShow()
+        {
+            // Arrange
+            var showsDto = new List<ShowDto>
+            {
+                new ShowDto
+                {
+                    Id = 1,
+                    Name = "Test Show",
+                    Language = "English",
+                    Genres = new List<string> { "Drama", "Action" },
+                }
+            };
+
+            var content = JsonSerializer.Serialize(showsDto);
+
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.OK,
+                   Content = new StringContent(content),
+               })
+               .Verifiable();
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://fakeapi.com/"),
+            };
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(It.IsAny<int>())).ReturnsAsync(new Show());
+
+            // Act
+            await _showService.FetchAndStoreShowsAsync();
+
+            // Assert
+            _showRepositoryMock.Verify(repo => repo.AddShowAsync(It.IsAny<Show>()), Times.Never);
+            _showRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
+        }
+
+        [Fact]
+        public async Task FetchAndStoreShowsAsync_ShouldThrowHttpRequestException_OnNetworkError()
+        {
+            // Arrange
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               .ThrowsAsync(new HttpRequestException("Network error"));
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://fakeapi.com/"),
+            };
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<HttpRequestException>(() => _showService.FetchAndStoreShowsAsync());
+        }
+
+        [Fact]
+        public async Task FetchAndStoreShowsAsync_ShouldThrowInvalidOperationException_WhenResponseNotSuccessful()
+        {
+            // Arrange
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+
+            handlerMock
+               .Protected()
+               .Setup<Task<HttpResponseMessage>>(
+                  "SendAsync",
+                  ItExpr.IsAny<HttpRequestMessage>(),
+                  ItExpr.IsAny<CancellationToken>()
+               )
+               .ReturnsAsync(new HttpResponseMessage()
+               {
+                   StatusCode = HttpStatusCode.BadRequest,
+               })
+               .Verifiable();
+
+            var httpClient = new HttpClient(handlerMock.Object)
+            {
+                BaseAddress = new Uri("http://fakeapi.com/"),
+            };
+
+            _httpClientFactoryMock.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _showService.FetchAndStoreShowsAsync());
+        }
+
+        [Fact]
+        public async Task GetAllShowsAsync_ShouldReturnShows()
+        {
+            // Arrange
+            var shows = new List<Show>
+            {
+                new Show { Id = 1, Name = "Show1" },
+                new Show { Id = 2, Name = "Show2" }
+            };
+
+            _showRepositoryMock.Setup(repo => repo.GetAllShowsAsync()).ReturnsAsync(shows);
+
+            // Act
+            var result = await _showService.GetAllShowsAsync();
+
+            // Assert
+            Assert.Equal(2, result.Count());
+            _showRepositoryMock.Verify(repo => repo.GetAllShowsAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetShowByIdAsync_ShouldReturnShow_WhenShowExists()
+        {
+            // Arrange
+            var show = new Show { Id = 1, Name = "Show1" };
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(1)).ReturnsAsync(show);
+
+            // Act
+            var result = await _showService.GetShowByIdAsync(1);
+
+            // Assert
+            Assert.Equal(show, result);
+            _showRepositoryMock.Verify(repo => repo.GetShowByIdAsync(1), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetShowByIdAsync_ShouldReturnNull_WhenShowDoesNotExist()
+        {
+            // Arrange
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(1)).ReturnsAsync((Show)null);
+
+            // Act
+            var result = await _showService.GetShowByIdAsync(1);
+
+            // Assert
+            Assert.Null(result);
+            _showRepositoryMock.Verify(repo => repo.GetShowByIdAsync(1), Times.Once);
         }
 
         [Fact]
         public async Task AddShowAsync_ShouldThrowArgumentNullException_WhenShowIsNull()
         {
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _service.AddShowAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _showService.AddShowAsync(null));
+        }
+
+        [Fact]
+        public async Task AddShowAsync_ShouldAddShow_WhenValidShow()
+        {
+            // Arrange
+            var show = new Show { Id = 1, Name = "Show1" };
+
+            _showRepositoryMock.Setup(repo => repo.SaveChangesAsync()).Returns(Task.CompletedTask);
+
+            // Act
+            await _showService.AddShowAsync(show);
+
+            // Assert
+            var addedShow = await _context.Shows.FindAsync(show.Id);
+            Assert.NotNull(addedShow);
+            Assert.Equal(show.Name, addedShow.Name);
+        }
+
+        [Fact]
+        public async Task UpdateShowAsync_ShouldThrowArgumentNullException_WhenShowIsNull()
+        {
+            // Act & Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => _showService.UpdateShowAsync(null));
         }
 
 
 
+
+
         [Fact]
-        public async Task DeleteShowAsync_ShouldNotThrow_WhenShowDoesNotExist()
+        public async Task DeleteShowAsync_ShouldDoNothing_WhenShowDoesNotExist()
         {
+            // Arrange
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(1)).ReturnsAsync((Show)null);
+
             // Act
-            var exception = await Record.ExceptionAsync(() => _service.DeleteShowAsync(999)); // ID que no existe
+            await _showService.DeleteShowAsync(1);
 
             // Assert
-            Assert.Null(exception); // No se espera ninguna excepción
-            var storedShows = await _repository.GetAllShowsAsync();
-            Assert.Empty(storedShows); // Asegurarse de que no hay shows
+            _showRepositoryMock.Verify(repo => repo.DeleteShow(It.IsAny<Show>()), Times.Never);
+            _showRepositoryMock.Verify(repo => repo.SaveChangesAsync(), Times.Never);
         }
 
-
-
         [Fact]
-        public async Task GetShowByIdAsync_ShouldReturnNull_WhenShowDoesNotExist()
+        public async Task DeleteShowAsync_ShouldThrowException_WhenErrorOccurs()
         {
-            // Act
-            var result = await _service.GetShowByIdAsync(999); // ID que no existe
+            // Arrange
+            var show = new Show { Id = 1, Name = "Show1" };
+            _showRepositoryMock.Setup(repo => repo.GetShowByIdAsync(1)).ReturnsAsync(show);
+            _showRepositoryMock.Setup(repo => repo.DeleteShow(show));
+            _showRepositoryMock.Setup(repo => repo.SaveChangesAsync()).ThrowsAsync(new Exception("Database error"));
 
-            // Assert
-            Assert.Null(result);
+            // Act & Assert
+            await Assert.ThrowsAsync<Exception>(() => _showService.DeleteShowAsync(1));
         }
     }
 }
